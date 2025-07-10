@@ -2,20 +2,20 @@ def solve_atm():
     W = int(input())
     c = int(input())
     
-    # Kiểm tra điều kiện cơ bản
+    # Kiem tra dieu kien co ban
     if W % 1000 != 0:
         return "0"
     
     menh_gia = [1000, 2000, 3000, 5000]
-    count = 0  # số tờ tiền
-    ways = 1   # số cách
+    count = 0  # so to tien
+    ways = 1   # so cach
     money = W
     
-    # Duyệt từ lũy thừa cao nhất xuống thấp nhất
+    # Duyet tu luy thua cao nhat xuong thap nhat
     for j in range(c, -1, -1):
-        used = [0, 0, 0, 0]  # đánh dấu mệnh giá nào được dùng
+        used = [0, 0, 0, 0]  # danh dau menh gia nao duoc dung
         
-        # Duyệt từ mệnh giá cao nhất xuống thấp nhất trong mỗi lũy thừa
+        # Duyet tu menh gia cao nhat xuong thap nhat trong moi luy thua
         for k in range(3, -1, -1):  # 5000, 3000, 2000, 1000
             denomination = menh_gia[k] * (10 ** j)
             
@@ -27,15 +27,16 @@ def solve_atm():
                 if paper_needed > 0:
                     used[k] = 1
         
-        # Tính số cách dựa trên các mệnh giá được sử dụng
+        # Tinh so cach dua tren cac menh gia duoc su dung
         # Logic: 5000 = 2000+3000, 3000 = 1000+2000
-        if used[3] == 1 and used[2] == 1 and used[0] == 1:  # dùng 5000, 3000, 1000
-            ways *= 3  # có 3 cách khác nhau
-        elif used[3] == 1 and used[0] == 1:  # dùng 5000 và 1000
-            ways *= 2  # có 2 cách
-        elif used[3] == 0 and used[2] == 1 and used[0] == 1:  # dùng 3000 và 1000
-            ways *= 2  # có 2 cách
+        if used[3] == 1 and used[2] == 1 and used[0] == 1:  # dung 5000, 3000, 1000
+            ways *= 3  # co 3 cach khac nhau
+        elif used[3] == 1 and used[0] == 1:  # dung 5000 va 1000
+            ways *= 2  # co 2 cach
+        elif used[3] == 0 and used[2] == 1 and used[0] == 1:  # dung 3000 va 1000
+            ways *= 2  # co 2 cach
     
+    # Kiem tra xem co the doi het tien khong
     if money != 0:
         return "0"
     
