@@ -1,22 +1,20 @@
 # VTV5011 - Quy hoach dong. Day con co tong chia het cho K
-# công thức truy hồi:
+# cong thuc truy hoi:
 # f[i][t] = min(
-#     f[i-1][t],                              // không chọn a[i]
-#     1 + f[i-1][(t - a[i]) mod k]            // chọn a[i]
+#     f[i-1][t],                              // khong chon a[i]
+#     1 + f[i-1][(t - a[i]) mod k]            // chon a[i]
 # )
-
-# VTV5011 - Quy hoach dong. Day con co tong chia het cho K
 
 def solve():
     # Doc input
-    n, k = map(int, input().split())
-    a = list(map(int, input().split()))
+    n, k = map(int, input().split())  # n: so phan tu, k: so chia
+    a = list(map(int, input().split()))  # mang dau vao
     
     # Chuyen ve index 1-based
-    a = [0] + a
+    a = [0] + a  # them phan tu 0 vao dau
     
     # Tinh tong tat ca
-    total_sum = sum(a[1:])
+    total_sum = sum(a[1:])  # tong cac phan tu tu vi tri 1 den n
     
     # Kiem tra truong hop dac biet
     if total_sum % k == 0:
@@ -25,11 +23,11 @@ def solve():
         return
     
     # Khoi tao bang DP
-    INF = n + 1
-    f = [[INF] * k for _ in range(n + 1)]
-    f[0][0] = 0
+    INF = n + 1  # gia tri vo cuc
+    f = [[INF] * k for _ in range(n + 1)]  # bang DP f[i][t]
+    f[0][0] = 0  # khoi tao: khong co phan tu nao, tong = 0
     
-    # In header
+    # In header bang DP
     print("n/t", end="")
     for t in range(k):
         print(f"{t:4}", end="")
@@ -39,21 +37,21 @@ def solve():
     print(f"{0:4}", end="")
     for t in range(k):
         if f[0][t] == INF:
-            print(" +00", end="")
+            print(" +00", end="")  # gia tri vo cuc
         else:
             print(f"{f[0][t]:4}", end="")
     print()
     
-    # DP
-    for i in range(1, n + 1):
-        for t in range(k):
-            # Khong chon a[i]
+    # Thuat toan DP
+    for i in range(1, n + 1):  # i: chi so phan tu dang xet
+        for t in range(k):  # t: so du can dat duoc
+            # Khong chon a[i] (loai bo a[i])
             f[i][t] = f[i-1][t]
             
-            # Chon a[i] (bo phan tu a[i] di)
-            prev_t = (t - a[i]) % k
+            # Chon a[i] (giu lai a[i])
+            prev_t = (t - a[i]) % k  # trang thai truoc khi them a[i]
             if prev_t < 0:
-                prev_t += k
+                prev_t += k  # xu ly so am
             
             if f[i-1][prev_t] < INF:
                 f[i][t] = min(f[i][t], f[i-1][prev_t] + 1)
@@ -68,8 +66,8 @@ def solve():
         print()
 
     # Tim ket qua
-    target = total_sum % k
-    removed = f[n][target]
+    target = total_sum % k  # so du can tim
+    removed = f[n][target]  # so phan tu can loai bo
     
     if removed >= n:
         print("Khong co day con nao thoa man yeu cau.")
@@ -77,24 +75,25 @@ def solve():
     
     print(f"Chieu dai day con: {n - removed}")
     
-    # Truy vet
+    # Truy vet de tim day con
     i = n
     t = target
-    selected = []
-    total_sum_selected = 0
+    selected = []  # cac phan tu duoc chon
+    total_sum_selected = 0  # tong cac phan tu duoc chon
 
-    for i in range(n, 0, -1):
+    for i in range(n, 0, -1):  # duyet nguoc tu n ve 1
         prev_t = (t - a[i]) % k
         if prev_t < 0:
             prev_t += k
             
         # Kiem tra co chon a[i] khong
         if f[i][t] == f[i-1][t]:
-              # Chon a[i] (giu lai a[i])
-            selected.append((i, a[i]))
-            total_sum_selected += a[i]
+            # Chon a[i] (giu lai a[i])
+            selected.append((i, a[i]))  # them vao danh sach
+            total_sum_selected += a[i]  # cong vao tong
         else:
-            t = prev_t
+            t = prev_t  # chuyen sang trang thai truoc
+    
     # In ket qua theo thu tu giam dan
     for idx, val in selected:
         print(f"a[{idx}]={val};", end="")
@@ -103,4 +102,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-
